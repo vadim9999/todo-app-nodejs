@@ -6,12 +6,23 @@ const app = express();
 
 // Set up mongoose connection
 const mongoose = require('mongoose');
-let dev_db_url = 'mongodb://localhost:27017/test';
-// let dev_db_url = 'mongodb://myUserAdmin:abc123@localhost:27017/test';
+
+var options = {
+    user: "myUserAdmin",
+    pass: "abc123"
+}       
+
+// var mongooseConnectionString = 'mongodb://localhost:27017/test?authSource=admin';
+
+// let dev_db_url = 'mongodb://localhost:27017/test';
+let dev_db_url = 'mongodb://tester:password@localhost:27017/test?authSource=test';
 // let dev_db_url = 'mongodb://someuser:abcd1234@ds123619.mlab.com:23619/productstutorial';
 
 const mongoDB = process.env.MONGODB_URI || dev_db_url;
-mongoose.connect(mongoDB);
+
+
+mongoose.connect(mongoDB, {useNewUrlParser: true});
+
 mongoose.Promise = global.Promise;
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));

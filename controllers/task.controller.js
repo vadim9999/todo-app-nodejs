@@ -1,9 +1,30 @@
-// const Task = require('../models/task.model');
+const Task = require('../models/task.model');
 
 //Simple version, without validation or sanitation
 
-const test = function (req, res) {
-    res.send('Greetings from the Test controller!');
+const task_create = function (req, res, next) {
+    let task = new Task(
+        {
+            name: req.body.name,
+            price:req.body.price
+        }
+    );
+
+    task.save(function (err) {
+        if (err){
+            return next(err);
+        }
+    })
+    res.send('Task Created successfully!');
 };
 
-module.exports = test ;
+const task_details = function (req, res){
+    Task.findById(req.params.id, function (err, task) {
+        if (err) return next(err);
+        res.send(task)
+    })
+}
+module.exports = { 
+    task_create,
+    task_details 
+};
