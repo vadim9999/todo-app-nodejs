@@ -7,22 +7,27 @@ const task_create = function (req, res, next) {
     console.log("Controller__task_create");
     console.log(req.body.name);
     console.log(req.body);
-    const { name, completed, date, login_id} = req.body;
+    const { name, completed, date, login} = req.body;
     let task = new Task(
-        {   login_id: login_id,
+        {   login: login,
             name: name,
             completed: completed,
             date: date,
             
         }
     );
+    
+        task.save(function (err) {
+            if (err){
+                console.log("ERROR______");
+                
+                return next("Server Error");
+            }
+            res.send('Task Created successfully!');
+        })
+        
 
-    task.save(function (err) {
-        if (err){
-            return next(err);
-        }
-    })
-    res.send('Task Created successfully!');
+    
 };
 
 const task_details = function (req, res){
@@ -36,9 +41,9 @@ const task_details = function (req, res){
 
 const get_all_tasks = (req, res)=>{
     console.log("get all tasks");
-    console.log(req.params.login_id);
+    console.log(req.params.login);
     
-    Task.find({login_id: req.params.login_id}, function (err, tasks) {
+    Task.find({login: req.params.login}, function (err, tasks) {
         if (err) return next(err);
         res.send(tasks)
     }).select("name completed date")

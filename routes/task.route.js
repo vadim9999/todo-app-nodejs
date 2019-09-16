@@ -13,6 +13,6 @@ router.post('/create', task_create);
 router.get('/:id', task_details)
 router.put('/:id/update', tasks_update)
 router.delete('/:id/delete', task_delete)
-router.get('/all_tasks_by_id/:login_id',get_all_tasks)
+router.get('/all_tasks_by_id/:login',get_all_tasks)
 
 module.exports = router;
