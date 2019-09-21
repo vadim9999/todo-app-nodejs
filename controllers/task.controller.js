@@ -7,9 +7,9 @@ const task_create = function (req, res, next) {
     console.log("Controller__task_create");
     console.log(req.body.name);
     console.log(req.body);
-    const { name, completed, date, login} = req.body;
+    const { name, completed, date, login_id} = req.body;
     let task = new Task(
-        {   login: login,
+        {   login_id: login_id,
             name: name,
             completed: completed,
             date: date,
@@ -23,7 +23,7 @@ const task_create = function (req, res, next) {
                 
                 return next("Server Error");
             }
-            res.send('Task Created successfully!');
+            res.send(task);
         })
         
 
@@ -41,9 +41,9 @@ const task_details = function (req, res){
 
 const get_all_tasks = (req, res)=>{
     console.log("get all tasks");
-    console.log(req.params.login);
+    console.log(req.params.login_id);
     
-    Task.find({login: req.params.login}, function (err, tasks) {
+    Task.find({login_id: req.params.login_id}, function (err, tasks) {
         if (err) return next(err);
         res.send(tasks)
     }).select("name completed date")
@@ -59,7 +59,7 @@ const tasks_update = function (req, res){
 }
 
 const task_delete = function (req, res){
-    Task.findByIdAndRemove(req.params.id, function (err) {
+    Task.findOneAndDelete({"_id":req.params.id}, function (err) {
         if (err) return next(err);
         res.send('Deleted successfully!');
     })

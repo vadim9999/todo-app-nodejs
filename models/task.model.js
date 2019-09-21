@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let TaskSchema = new Schema({
-    login: {type: String, required:true, lowercase: true},
+    login_id: {type: mongoose.Schema.Types.ObjectId, required:true},
     name: {type: String, required: true, max: 100},
     completed: {type: Boolean, required: true},
     date: {type: Date, required:true},

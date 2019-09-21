@@ -23,7 +23,6 @@ let UserSchema = new Schema({
         minlength:3, 
         maxlength:255
     },
-        
     
     
 })
