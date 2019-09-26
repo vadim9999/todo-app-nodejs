@@ -4,9 +4,16 @@ const bodyParser = require('body-parser');
 const task = require('./routes/task.route')
 const user = require('./routes/user.route')
 const app = express();
-
-// Set up mongoose connection
 const mongoose = require('mongoose');
+
+const config = require("config")
+if (!config.get("myprivatekey")){
+    console.log("FATAL ERROR: myprivatekey is not defined");
+    process. exit(1)
+    
+}
+// Set up mongoose connection
+
 
 var options = {
     user: "myUserAdmin",
@@ -22,7 +29,10 @@ let dev_db_url = 'mongodb://tester:password1@localhost:27017/myDatabase?authSour
 const mongoDB = process.env.MONGODB_URI || dev_db_url;
 
 
-mongoose.connect(mongoDB, {useNewUrlParser: true});
+mongoose.connect(mongoDB, {useNewUrlParser: true})
+.then(()=> console.log("connected to MongoDB"))
+.catch(err => console.error("Could not connecect to MongoDB"));
+
 
 mongoose.Promise = global.Promise;
 const db = mongoose.connection;

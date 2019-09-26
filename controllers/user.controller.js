@@ -2,11 +2,11 @@ const User = require('../models/user.model')
 
 const user_create = (req, res, next) => {
     console.log("User controller");
-    const { name, login, password } = req.body;
+    const { name, email, password } = req.body;
     let user = new User(
         {
             name: name,
-            login: login,
+            email: email,
             password: password,
         }
     )
