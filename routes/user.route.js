@@ -7,7 +7,7 @@ const {
 } = require('../controllers/user.controller')
 const router = express.Router();
 
-router.get("/user/current", auth, async (req, res) => {
+router.get("/current", auth, async (req, res) => {
     console.log("current");
     
     const user = await User.findById(req.user._id).select("-password");
