@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 // initialize our express app
 const task = require('./routes/task.route')
 const user = require('./routes/user.route')
+var cors = require('cors')
 const app = express();
 const mongoose = require('mongoose');
 
@@ -38,17 +39,26 @@ mongoose.Promise = global.Promise;
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
+// app.options('*', cors())
+
+const corsOptions = {
+    exposedHeaders: 'x-auth-token',
+  };
+app.use(cors(corsOptions))
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Expose-Headers", "x-auth-token")
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-auth-token");
-    res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+// app.use(function(req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Expose-Headers", "x-auth-token")
+//     res.header("Access-Control-Allow-Headers", 
+//     "Origin, X-Requested-With, Content-Type, Accept, x-auth-token");
+   
+//     res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
 
-    next();
-  });
+//     next();
+//   });
   
 app.use('/tasks', task)
 app.use('/user', user)
