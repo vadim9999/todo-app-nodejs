@@ -3,7 +3,8 @@ const auth = require("../middleware/auth");
 const bcrypt = require("bcrypt")
 const { User, validate } = require("../models/user.model")
 const {
-    user_create
+  
+    authorizate
 } = require('../controllers/user.controller')
 const router = express.Router();
 
@@ -41,6 +42,24 @@ router.post("/create_user", async (req, res) => {
 })
  
 
-    // router.post('/create_user', user_create)
+    router.post('/authorizate', async (req,res)=>{
+        console.log("authorizate");
+        const {email, password} = req.body;
+        const user = await User.findOne({email: email})
+        console.log(user);
+        
+        if (user === null) return res.status(400).send("user not found")
+        console.log("after return");
+        
+        const match = await bcrypt.compare(password, user.password)
+        if(match) {
+            const token = user.generateAuthToken()
+            res.header("x-auth-token", token).send({
+                _id: user.id,
+                name: user.name,
+                email: user.email
+            })
+        }
+    })
 
     module.exports = router;
