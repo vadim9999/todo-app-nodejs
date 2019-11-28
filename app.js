@@ -29,6 +29,8 @@ let dev_db_url = 'mongodb://tester:password1@localhost:27017/myDatabase?authSour
 
 const mongoDB = process.env.MONGODB_URI || dev_db_url;
 
+console.log("key", process.env.MYPRIVATEKEY);
+
 
 mongoose.connect(mongoDB, {useNewUrlParser: true})
 .then(()=> console.log("connected to MongoDB"))
