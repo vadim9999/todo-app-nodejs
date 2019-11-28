@@ -6,7 +6,7 @@ const user = require('./routes/user.route')
 var cors = require('cors')
 const app = express();
 const mongoose = require('mongoose');
-
+const path = require('path')
 const config = require("config")
 if (!config.get("myprivatekey")){
     console.log("FATAL ERROR: myprivatekey is not defined");
@@ -60,9 +60,21 @@ app.use(bodyParser.urlencoded({extended: false}));
 //     next();
 //   });
   
+// ***** production
+app.use(express.static(path.join(__dirname, 'views/')))
+
+app.get('/', function(req, res){
+    res.sendFile(path.join(__dirname,'views/', 'index.html'))
+})
+// *****
+
 app.use('/tasks', task)
 app.use('/user', user)
-let port = 1234;
+// let port = 1234;
+let port = process.env.PORT;
+if(port == null || port == ""){
+    port = 1234
+}
 
 app.listen(port, () => {
     console.log('Server is up and running on port numner ' + port);
