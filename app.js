@@ -24,8 +24,8 @@ var options = {
 // var mongooseConnectionString = 'mongodb://localhost:27017/test?authSource=admin';
 
 // let dev_db_url = 'mongodb://localhost:27017/test';
-let dev_db_url = 'mongodb://tester:password1@localhost:27017/myDatabase?authSource=myDatabase';
-// let dev_db_url = 'mongodb://someuser:abcd1234@ds123619.mlab.com:23619/productstutorial';
+// let dev_db_url = 'mongodb://tester:password1@localhost:27017/myDatabase?authSource=myDatabase';
+// let dev_db_url = 'mongodb+srv://testeruser123:yykyZJPF920O8xAO@cluster0-wzozh.mongodb.net/todoapp?retryWrites=true&w=majority';
 
 const mongoDB = process.env.MONGODB_URI || dev_db_url;
 
