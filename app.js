@@ -77,7 +77,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // ***** production
 app.use(express.static(path.join(__dirname, 'views/')))
 
-app.get('/', function (req, res) {
+app.get(['/','/todolist', '/signup'], function (req, res) {
     res.sendFile(path.join(__dirname, 'views/', 'index.html'))
 })
 // *****
