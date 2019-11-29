@@ -10,28 +10,27 @@ const path = require('path')
 const config = require("./.env")
 console.log(config);
 
-if (!config.get("myprivatekey")){
+if (!config.get("MYPRIVATEKEY")){
     console.log("FATAL ERROR: myprivatekey is not defined");
     process. exit(1)
     
 }
 // Set up mongoose connection
 
+const mongoDB = process.env.MONGODB_URI ;
 
-var options = {
-    user: "myUserAdmin",
-    pass: "abc123"
-}       
+if(mongoDB == null || mongoDB == ''  ){
 
-// var mongooseConnectionString = 'mongodb://localhost:27017/test?authSource=admin';
-
-// let dev_db_url = 'mongodb://localhost:27017/test';
-// let dev_db_url = 'mongodb://tester:password1@localhost:27017/myDatabase?authSource=myDatabase';
-
-const mongoDB = process.env.MONGODB_URI || dev_db_url;
+    if(config.get("MONGODB_URI") && config.get("MONGODB_URI") !== ''){
+        mongoDB = config.get("MONGODB_URI")
+    }
+}else {
+    console.log("Error MONGODB_URI is not defined");
+    
+}
 
 console.log("key", process.env.MYPRIVATEKEY);
-
+console.log("MONGODB_URI", process.env.MONGODB_URI);
 
 mongoose.connect(mongoDB, {useNewUrlParser: true})
 .then(()=> console.log("connected to MongoDB"))
