@@ -1,6 +1,6 @@
 
 
-If you want to run this project on local maching you shoud create json file with name default and 
+If you want to run this project on local maching you should create folder with name `config` in root of project and inside of it create json file with name `default.json` and 
 
 create property MYPRIVATEKEY with you name
 the second one MONGODB_URI link to you db
