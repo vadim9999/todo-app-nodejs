@@ -7,7 +7,9 @@ var cors = require('cors')
 const app = express();
 const mongoose = require('mongoose');
 const path = require('path')
-const config = require("config")
+const config = require("./.env")
+console.log(config);
+
 if (!config.get("myprivatekey")){
     console.log("FATAL ERROR: myprivatekey is not defined");
     process. exit(1)
@@ -25,7 +27,6 @@ var options = {
 
 // let dev_db_url = 'mongodb://localhost:27017/test';
 // let dev_db_url = 'mongodb://tester:password1@localhost:27017/myDatabase?authSource=myDatabase';
-// let dev_db_url = 'mongodb+srv://testeruser123:yykyZJPF920O8xAO@cluster0-wzozh.mongodb.net/todoapp?retryWrites=true&w=majority';
 
 const mongoDB = process.env.MONGODB_URI || dev_db_url;
 
