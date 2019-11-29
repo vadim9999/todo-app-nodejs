@@ -27,10 +27,6 @@ if (mongoDB == null || mongoDB == '') {
 
 }
 
-console.log("key process", process.env.MYPRIVATEKEY);
-console.log("MONGODB_URI process", process.env.MONGODB_URI);
-
-
 mongoose.connect(mongoDB, { useNewUrlParser: true })
     .then(() => console.log("connected to MongoDB"))
     .catch(err => console.error("Could not connecect to MongoDB"));
@@ -79,6 +75,4 @@ if (port == null || port == "") {
 
 app.listen(port, () => {
     console.log('Server is up and running on port numner ' + port);
-    console.log('Database URI ' + mongoDB);
-
 });
