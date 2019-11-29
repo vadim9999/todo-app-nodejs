@@ -7,7 +7,21 @@ the second one MONGODB_URI link to you db
 
 ```
 {
-    "MYPRIVATEKEY": [YOUR PRIVATE KEY],
-     "MONGODB_URI" : [YOUR URL TO MONGODB]
+    "MYPRIVATEKEY": "[YOUR PRIVATE KEY]",
+     "MONGODB_URI" : "[YOUR URL TO MONGODB]"
 }
+```
+
+if you want to run with `heroku local` create file `.env` in root directory and setting up like this:
+
+```
+MYPRIVATEKEY=[YOUR PRIVATE KEY]
+MONGODB_URI=[YOUR URL TO MONGODB]
+
+```
+
+after this run command 
+
+```
+heroku local
 ```

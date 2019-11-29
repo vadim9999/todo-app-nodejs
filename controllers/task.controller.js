@@ -4,9 +4,8 @@ const moment = require('moment')
 // creates document in mongodb
 
 const task_create = function (req, res, next) {
-    console.log("Controller__task_create");
-    console.log(req.body.name);
-    console.log(req.body);
+    console.log("/task_create");
+
     const { name, completed, date, login_id} = req.body;
     let task = new Task(
         {   login_id: login_id,
@@ -16,11 +15,8 @@ const task_create = function (req, res, next) {
             
         }
     );
-    
         task.save(function (err) {
             if (err){
-                console.log("ERROR______");
-                
                 return next("Server Error");
             }
             res.send(task);
@@ -31,7 +27,7 @@ const task_create = function (req, res, next) {
 };
 
 const task_details = function (req, res){
-    console.log("task_details");
+    console.log("/task_details");
     
      Task.findById(req.params.id, function (err, task) {
         if (err) return next(err);
@@ -40,8 +36,7 @@ const task_details = function (req, res){
 }
 
 const get_all_tasks = (req, res)=>{
-    console.log("get all tasks");
-    console.log(req.params.login_id);
+    console.log("/get all tasks");
     
     Task.find({login_id: req.params.login_id}, function (err, tasks) {
         if (err) return next(err);
@@ -50,7 +45,7 @@ const get_all_tasks = (req, res)=>{
 }
 
 const tasks_update = function (req, res){
-    console.log(req.body);
+    console.log('/tasks_update');
     
     Task.findByIdAndUpdate(req.params.id, {$set:req.body}, function (err, task) {
         if (err) return next(err);

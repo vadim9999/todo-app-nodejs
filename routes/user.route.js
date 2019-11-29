@@ -9,11 +9,10 @@ const {
 const router = express.Router();
 
 router.get("/current", auth, async (req, res) => {
-    console.log("current");
+    console.log("/current");
     
     const user = await User.findById(req.user._id).select("-password");
     res.send(user)
-
 })
 
 router.post("/create_user", async (req, res) => {
@@ -43,14 +42,12 @@ router.post("/create_user", async (req, res) => {
  
 
     router.post('/authorizate', async (req,res)=>{
-        console.log("authorizate");
+        console.log("/authorizate");
         const {email, password} = req.body;
         const user = await User.findOne({email: email})
-        console.log(user);
         
         if (user === null) return res.status(400).send("user not found")
-        console.log("after return");
-        
+         
         const match = await bcrypt.compare(password, user.password)
         if(match) {
             const token = user.generateAuthToken()

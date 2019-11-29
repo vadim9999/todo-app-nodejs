@@ -22,7 +22,7 @@ const bcrypt = require("bcrypt")
 // }
 
 const authorizate = async (req,res,next) =>{
-    console.log("authorizate");
+    console.log("/authorizate");
     const {email, password} = req.body;
     const user = await User.findOne({email: email})
     if (user === undefined) return res.status(400).send(error.details[0].message)
