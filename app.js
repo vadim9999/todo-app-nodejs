@@ -7,34 +7,51 @@ var cors = require('cors')
 const app = express();
 const mongoose = require('mongoose');
 const path = require('path')
-const config = require('config')
+// const config = require('config')
 
 
 // Set up mongoose connection
+const mode = process.env.NODE_ENV || 'development'
 
-let mongoDB = process.env.MONGODB_URI;
+console.log("Mode: ", mode);
 
-if (mongoDB == null || mongoDB == '') {
+if (mode !== 'production') {
+    try {
+        const result = require('dotenv').config();
+        if (result.error) {
+            throw result.error
+        }
 
-    if (config.get("MONGODB_URI") && config.get("MONGODB_URI") !== '') {
-        mongoDB = config.get("MONGODB_URI")
-    } else {
-        console.log("FATAL ERROR: myprivatekey is not defined");
-        process.exit(1)
+    } catch (e) {
+        console.log(".env file not found");
     }
-} else {
-    console.log("Error MONGODB_URI is not defined");
 
 }
 
-mongoose.connect(mongoDB, { useNewUrlParser: true })
-    .then(() => console.log("connected to MongoDB"))
-    .catch(err => console.error("Could not connecect to MongoDB"));
+let privateKey = process.env.MYPRIVATEKEY;
+let mongoDB = process.env.MONGODB_URI;
 
 
-mongoose.Promise = global.Promise;
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+if (privateKey === undefined || privateKey === '') {
+    console.log("Error private key now found. Exit");
+    process.exit(1)
+}
+
+if (mongoDB !== undefined && mongoDB !== '') {
+
+    mongoose.connect(mongoDB, { useNewUrlParser: true })
+        .then(() => console.log("connected to MongoDB"))
+        .catch(err => console.error("Could not connecect to MongoDB"));
+
+
+    mongoose.Promise = global.Promise;
+    const db = mongoose.connection;
+    db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+} else {
+    console.log("Error: mongodb key undefined. Continuing execute code");
+}
+
+
 
 // app.options('*', cors())
 
@@ -60,7 +77,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // ***** production
 app.use(express.static(path.join(__dirname, 'views/')))
 
-app.get('/', function (req, res) {
+app.get(['/','/todolist', '/signup'], function (req, res) {
     res.sendFile(path.join(__dirname, 'views/', 'index.html'))
 })
 // *****
@@ -74,5 +91,5 @@ if (port == null || port == "") {
 }
 
 app.listen(port, () => {
-    console.log('Server is up and running on port numner ' + port);
+    console.log('Server is up and running on port: ' + port);
 });
