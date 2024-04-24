@@ -25,3 +25,20 @@ after this run command
 ```
 heroku local
 ```
+
+### Requests 
+
+```
+POST localhost:1234/user/create_user
+
+name: User1
+password: 123456789
+email: test@test.com
+
+{
+    "_id": "662942db4adaab2a15844ae7",
+    "name": "User",
+    "email": "test@test.com"
+}
+
+```
