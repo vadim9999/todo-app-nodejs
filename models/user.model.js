@@ -1,9 +1,8 @@
 import { Schema as _Schema, model } from "mongoose";
 
-import joi from "joi";
+import Joi from "joi";
 import jsonwebtoken from "jsonwebtoken";
 
-const { string, validate } = joi;
 const { sign } = jsonwebtoken;
 
 const Schema = _Schema;
@@ -43,11 +42,11 @@ UserSchema.methods.generateAuthToken = function () {
 export const User = model("User", UserSchema);
 
 export function validateUser(user) {
-  const schema = {
-    name: string().min(3).max(50).required(),
-    email: string().min(5).max(255).required().email().lowercase(),
-    password: string().min(3).max(255).required(),
-  };
+  const schema = Joi.object({
+    name: Joi.string().min(3).max(50).required(),
+    email: Joi.string().min(5).max(255).required().email().lowercase(),
+    password: Joi.string().min(3).max(255).required(),
+  });
 
-  return validate(user, schema);
+  return schema.validate(user);
 }
