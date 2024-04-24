@@ -31,7 +31,7 @@ heroku local
 ```
 POST localhost:1234/user/create_user
 
-name: User1
+name: User
 password: 123456789
 email: test@test.com
 
