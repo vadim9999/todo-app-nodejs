@@ -35,22 +35,22 @@ router.post("/create", async (req, res) => {
   });
 });
 
-router.post("/authorizate", async (req, res) => {
-  console.log("/authorizate");
+router.post("/auth", async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email: email });
 
   if (user === null) return res.status(400).send("user not found");
 
   const match = await compare(password, user.password);
-  if (match) {
-    const token = user.generateAuthToken();
-    res.header("x-auth-token", token).send({
-      _id: user.id,
-      name: user.name,
-      email: user.email,
-    });
-  }
+
+  if (!match) return res.status(404).send("not found");
+
+  const token = user.generateAuthToken();
+  res.header("x-auth-token", token).send({
+    _id: user.id,
+    name: user.name,
+    email: user.email,
+  });
 });
 
 export default router;

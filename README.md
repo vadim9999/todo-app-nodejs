@@ -32,7 +32,7 @@ heroku local
 POST localhost:1234/user/create
 
 name: User
-password: 123456789
+password: 123456
 email: test@test.com
 
 {
@@ -44,5 +44,17 @@ email: test@test.com
 ```
 
 ```
+POST localhost:1234/user/auth
+
+email:test@test.com
+password:123456
+
+{
+    "_id": "662945c91a3aa1470e5bfbb1",
+    "name": "User",
+    "email": "test@test.com"
+}
+
+Sets token to x-auth-token in headers 
 
 ```
