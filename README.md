@@ -29,7 +29,7 @@ heroku local
 ### Requests 
 
 ```
-POST localhost:1234/user/create_user
+POST localhost:1234/user/create
 
 name: User
 password: 123456789
@@ -40,5 +40,9 @@ email: test@test.com
     "name": "User",
     "email": "test@test.com"
 }
+
+```
+
+```
 
 ```

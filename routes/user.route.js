@@ -12,7 +12,7 @@ router.get("/current", auth, async (req, res) => {
   res.send(user);
 });
 
-router.post("/create_user", async (req, res) => {
+router.post("/create", async (req, res) => {
   const { error } = validateUser(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
