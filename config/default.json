@@ -1,0 +1,4 @@
+{
+    "MYPRIVATEKEY": "1234",
+     "MONGODB_URI" : "mongodb://localhost:27017"
+}
