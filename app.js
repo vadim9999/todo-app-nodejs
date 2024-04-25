@@ -4,11 +4,13 @@ import bodyParser from "body-parser";
 import task from "./routes/task.route.js";
 import user from "./routes/user.route.js";
 import cors from "cors";
-const app = express();
 import mongoose from "mongoose";
 // import { join } from "path";
 // const config = require('config')
 import dotenv from "dotenv";
+import session from "express-session";
+
+const app = express();
 
 const { json, urlencoded } = bodyParser;
 
@@ -40,7 +42,8 @@ if (privateKey === undefined || privateKey === "") {
 
 async function main() {
   if (mongoDB !== undefined && mongoDB !== "") {
-    await mongoose.connect(mongoDB)
+    await mongoose
+      .connect(mongoDB)
       .then(() => console.log("connected to MongoDB"))
       .catch((err) => console.error("Could not connecect to MongoDB"));
 
@@ -54,10 +57,10 @@ async function main() {
 
 // app.options('*', cors())
 
-const corsOptions = {
-  exposedHeaders: "x-auth-token",
-};
-app.use(cors(corsOptions));
+// const corsOptions = {
+//   exposedHeaders: "x-auth-token",
+// };
+// app.use(cors(corsOptions));
 
 app.use(json());
 app.use(urlencoded({ extended: false }));
@@ -81,7 +84,39 @@ app.use(urlencoded({ extended: false }));
 // });
 // *****
 
-app.use("/tasks", task);
+var sess = {
+  secret: "keyboard cat",
+  resave: false,
+  saveUninitialized: true,
+  cookie: {},
+};
+
+// if (app.get("env") === "production") {
+app.set("trust proxy", 1); // trust first proxy
+sess.cookie.secure = true; // serve secure cookies
+// }
+
+app.use(session(sess));
+
+app.get("/", function (req, res, next) {
+  if (req.session.views) {
+    req.session.views++;
+    res.setHeader("Content-Type", "text/html");
+    res.write("<p>views: " + req.session.views + "</p>");
+    res.write("<p>expires in: " + req.session.cookie.maxAge / 1000 + "s</p>");
+    res.end();
+  } else {
+    req.session.views = 1;
+    res.end("welcome to the session demo. refresh!");
+  }
+});
+
+// error handler
+app.use((err, req, res, next) => {
+  res.status(400).send(err.message);
+});
+
+app.use("/task", task);
 app.use("/user", user);
 
 let port = process.env.PORT;

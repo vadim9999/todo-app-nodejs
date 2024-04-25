@@ -6,19 +6,20 @@ import moment from "moment";
 const task_create = function (req, res, next) {
   console.log("/task_create");
 
-  const { name, completed, date, login_id } = req.body;
-  let task = new Task({
-    login_id: login_id,
-    name: name,
-    completed: completed,
-    date: date,
-  });
-  task.save(function (err) {
-    if (err) {
-      return next("Server Error");
-    }
-    res.send(task);
-  });
+  // const { name, completed, date, login_id } = req.body;
+  // let task = new Task({
+  //   login_id: login_id,
+  //   name: name,
+  //   completed: completed,
+  //   date: date,
+  // });
+  // task.save(function (err) {
+  //   if (err) {
+  //     return next("Server Error");
+  //   }
+  //   res.send(task);
+  // });
+  res.sendStatus(200)
 };
 
 const task_details = function (req, res) {
