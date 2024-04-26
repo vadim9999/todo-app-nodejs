@@ -1,6 +1,6 @@
 import { Router } from "express";
 import auth from "../middleware/auth.js";
-import { hash, compare } from "bcrypt";
+import bcrypt from "bcrypt";
 import { User, validateUser } from "../models/user.model.js";
 // import { authorizate } from "../controllers/user.controller.js";
 const router = Router();
@@ -24,15 +24,21 @@ router.post("/create", async (req, res) => {
     password: req.body.password,
     email: req.body.email,
   });
-  user.password = await hash(user.password, 10);
-  await user.save();
 
-  const token = user.generateAuthToken();
-  res.header("x-auth-token", token).send({
-    _id: user.id,
-    name: user.name,
-    email: user.email,
-  });
+  try {
+    user.password = await bcrypt.hash(user.password, 10);
+    user.save();
+    res.sendStatus(200);
+  } catch (e) {
+    res.sendStatus(500);
+  }
+
+  // const token = user.generateAuthToken();
+  // res.header("x-auth-token", token).send({
+  //   _id: user.id,
+  //   name: user.name,
+  //   email: user.email,
+  // });
 });
 
 router.post("/auth", async (req, res) => {
@@ -41,8 +47,8 @@ router.post("/auth", async (req, res) => {
 
   if (user === null) return res.status(400).send("user not found");
 
-  const match = await compare(password, user.password);
-
+  const match = await bcrypt.compare(password, user.password);
+  console.log("match", match);
   if (!match) return res.status(404).send("not found");
 
   const token = user.generateAuthToken();
