@@ -44,17 +44,14 @@ email: test@test.com
 ```
 
 ```
-POST localhost:1234/user/auth
+POST localhost:1234/user/login
 
 email:test@test.com
 password:123456
 
 {
-    "_id": "662945c91a3aa1470e5bfbb1",
-    "name": "User",
-    "email": "test@test.com"
+    token: "abcd1234"
 }
 
-Sets token to x-auth-token in headers 
 
 ```

@@ -2,8 +2,11 @@ import { Router } from "express";
 import auth from "../middleware/auth.js";
 import bcrypt from "bcrypt";
 import { User, validateUser } from "../models/user.model.js";
+import jwt from "jsonwebtoken";
 // import { authorizate } from "../controllers/user.controller.js";
 const router = Router();
+
+
 
 router.get("/current", auth, async (req, res) => {
   console.log("/current");
@@ -25,6 +28,7 @@ router.post("/create", async (req, res) => {
     email: req.body.email,
   });
 
+
   try {
     user.password = await bcrypt.hash(user.password, 10);
     user.save();
@@ -41,7 +45,7 @@ router.post("/create", async (req, res) => {
   // });
 });
 
-router.post("/auth", async (req, res) => {
+router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email: email });
 
@@ -51,12 +55,25 @@ router.post("/auth", async (req, res) => {
   console.log("match", match);
   if (!match) return res.status(404).send("not found");
 
-  const token = user.generateAuthToken();
-  res.header("x-auth-token", token).send({
-    _id: user.id,
-    name: user.name,
-    email: user.email,
-  });
+  jwt.sign(
+    { user },
+    process.env.MYPRIVATEKEY,
+    { expiresIn: "1h" },
+    (err, token) => {
+      if (err) {
+        res.status(500).send("Error generating token");
+      } else {
+        res.json({ token });
+      }
+    }
+  );
+
+  // const token = user.generateAuthToken();
+  // res.header("x-auth-token", token).send({
+  //   _id: user.id,
+  //   name: user.name,
+  //   email: user.email,
+  // });
 });
 
 export default router;
