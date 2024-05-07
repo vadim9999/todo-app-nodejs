@@ -8,10 +8,13 @@ import jwt from "jsonwebtoken";
 const router = Router();
 
 router.get("/:id", verifyToken, async (req, res) => {
-  console.log("/current");
-
-  const user = await User.findById(req.params.id).select("-password");
+  const user = await User.findById(req.params.id, 'name email');
   res.send(user);
+});
+
+router.get("/", verifyToken, async (req, res) => {
+  const users = await User.find({}, "name");
+  res.send(users);
 });
 
 router.post("/create", async (req, res) => {

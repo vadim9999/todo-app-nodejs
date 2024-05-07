@@ -53,10 +53,10 @@ async function main() {
 
 // app.options('*', cors())
 
-// const corsOptions = {
-//   exposedHeaders: "x-auth-token",
-// };
-// app.use(cors(corsOptions));
+const corsOptions = {
+  exposedHeaders: "authentication",
+};
+app.use(cors(corsOptions));
 
 app.use(json());
 app.use(urlencoded({ extended: false }));

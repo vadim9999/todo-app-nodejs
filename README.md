@@ -54,3 +54,30 @@ password:123456
 }
 
 ```
+
+```
+GET localhost:1234/user/
+
+[
+    {
+        "_id": "662bfaba258847c10ca960d6",
+        "name": "User"
+    },
+    {
+        "_id": "662bfb955f7cf137dcbb08f6",
+        "name": "User"
+    },
+]
+
+```
+
+```
+GET localhost:1234/user/662bfaba258847c10ca960d6
+
+{
+    "_id": "662bfaba258847c10ca960d6",
+    "name": "User",
+    "email": "test234234@test.com"
+}
+
+```
